@@ -1,7 +1,7 @@
-import type { SessionDayGroup, StudySession } from "@/features/sessions/types";
+import type { SessionsDashboardData, StudySession } from "@/features/sessions/types";
 
 type GetSessionsResponse = {
-  data: SessionDayGroup[];
+  data: SessionsDashboardData;
 };
 
 type CreateSessionPayload = {

@@ -30,6 +30,22 @@ export function formatDurationLabel(totalSeconds: number) {
   return `${hours}h ${minutes}m`;
 }
 
+export function formatDurationCompact(totalSeconds: number) {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  }
+
+  if (minutes > 0) {
+    return `${minutes}m ${seconds}s`;
+  }
+
+  return `${seconds}s`;
+}
+
 export function formatDateHeading(dateString: string) {
   const date = new Date(dateString);
 

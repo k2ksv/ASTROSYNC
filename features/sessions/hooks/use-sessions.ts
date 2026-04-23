@@ -2,10 +2,28 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { createSession, fetchSessions, removeSession } from "@/features/sessions/api";
-import type { SessionDayGroup } from "@/features/sessions/types";
+import type { SessionsDashboardData } from "@/features/sessions/types";
+
+const emptyDashboardData: SessionsDashboardData = {
+  sessionsByDate: [],
+  suggestions: {
+    subjects: [],
+    subSubjectsBySubject: {},
+  },
+  analytics: {
+    overall: {
+      totalDuration: 0,
+      totalSessions: 0,
+      activeDays: 0,
+    },
+    subjects: [],
+    weekly: [],
+    monthly: [],
+  },
+};
 
 export function useSessions() {
-  const [sessions, setSessions] = useState<SessionDayGroup[]>([]);
+  const [dashboard, setDashboard] = useState<SessionsDashboardData>(emptyDashboardData);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +34,7 @@ export function useSessions() {
 
     try {
       const response = await fetchSessions();
-      setSessions(response.data);
+      setDashboard(response.data);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Unable to load sessions.");
     } finally {
@@ -70,7 +88,7 @@ export function useSessions() {
   );
 
   return {
-    sessions,
+    dashboard,
     isLoading,
     isSaving,
     error,

@@ -7,6 +7,8 @@ type FieldProps = {
   onChange: (value: string) => void;
   placeholder: string;
   suggestions?: string[];
+  onSuggestionSelect?: (value: string) => void;
+  helperText?: string;
 };
 
 export function Field({
@@ -16,8 +18,13 @@ export function Field({
   onChange,
   placeholder,
   suggestions = [],
+  onSuggestionSelect,
+  helperText,
 }: FieldProps) {
   const listId = `${id}-suggestions`;
+  const visibleSuggestions = suggestions
+    .filter((suggestion) => suggestion.trim().length > 0)
+    .slice(0, 6);
 
   return (
     <label className="block space-y-3">
@@ -32,6 +39,21 @@ export function Field({
           "placeholder:text-surface-500 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20",
         )}
       />
+      {helperText ? <p className="text-xs text-surface-500">{helperText}</p> : null}
+      {visibleSuggestions.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {visibleSuggestions.map((suggestion) => (
+            <button
+              type="button"
+              key={suggestion}
+              onClick={() => (onSuggestionSelect ?? onChange)(suggestion)}
+              className="rounded-full border border-white/8 bg-surface-950 px-3 py-1.5 text-xs text-surface-400 transition hover:border-accent-500/40 hover:text-accent-300"
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
+      ) : null}
       {suggestions.length > 0 ? (
         <datalist id={listId}>
           {suggestions.map((suggestion) => (

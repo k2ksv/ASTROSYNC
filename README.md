@@ -13,9 +13,12 @@ ASTRO SYNC is a minimal full-stack study planner built with Next.js, Tailwind CS
 ## Features
 
 - Stopwatch with start, pause, resume, and reset
-- Subject and sub-subject selection with editable suggestions
+- Subject and sub-subject selection with suggestions learned from saved sessions
 - Session persistence via Next.js API routes
 - Daily dashboard grouped by date with total study time
+- Live total focus time while a session is running
+- Subject and sub-subject total breakdowns
+- Weekly and monthly focus analysis
 - Loading states, error handling, and responsive dark UI
 - Modular structure prepared for future social features
 

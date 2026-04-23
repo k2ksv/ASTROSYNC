@@ -89,3 +89,5 @@ export function useStopwatch() {
     ...actions,
   };
 }
+
+export type UseStopwatchReturn = ReturnType<typeof useStopwatch>;

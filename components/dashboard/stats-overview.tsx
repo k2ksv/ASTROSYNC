@@ -1,18 +1,23 @@
-import type { SessionDayGroup } from "@/features/sessions/types";
+import type { SessionAnalytics } from "@/features/sessions/types";
 import { Card } from "@/components/ui/card";
 import { formatDurationLabel } from "@/lib/utils";
 
 type StatsOverviewProps = {
-  sessions: SessionDayGroup[];
+  analytics: SessionAnalytics;
+  liveElapsedSeconds: number;
 };
 
-export function StatsOverview({ sessions }: StatsOverviewProps) {
-  const totalDuration = sessions.reduce((sum, group) => sum + group.totalDuration, 0);
-  const totalSessions = sessions.reduce((sum, group) => sum + group.sessions.length, 0);
-  const activeDays = sessions.length;
+export function StatsOverview({ analytics, liveElapsedSeconds }: StatsOverviewProps) {
+  const totalDuration = analytics.overall.totalDuration + liveElapsedSeconds;
+  const totalSessions = analytics.overall.totalSessions;
+  const activeDays = analytics.overall.activeDays;
 
   const items = [
-    { label: "Total Focus", value: formatDurationLabel(totalDuration) },
+    {
+      label: "Total Focus",
+      value: formatDurationLabel(totalDuration),
+      helper: liveElapsedSeconds > 0 ? "Includes current running session" : undefined,
+    },
     { label: "Sessions", value: String(totalSessions) },
     { label: "Active Days", value: String(activeDays) },
   ];
@@ -23,6 +28,7 @@ export function StatsOverview({ sessions }: StatsOverviewProps) {
         <Card className="p-5" key={item.label}>
           <div className="text-sm text-surface-500">{item.label}</div>
           <div className="mt-2 text-2xl font-semibold text-white">{item.value}</div>
+          {item.helper ? <div className="mt-1 text-xs text-accent-300">{item.helper}</div> : null}
         </Card>
       ))}
     </div>

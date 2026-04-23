@@ -3,14 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   createStudySession,
   deleteStudySession,
-  getGroupedStudySessions,
+  getSessionsDashboardData,
 } from "@/features/sessions/repository";
 import { createSessionSchema } from "@/features/sessions/validation";
 import { jsonError } from "@/lib/http";
 
 export async function GET() {
   try {
-    const data = await getGroupedStudySessions();
+    const data = await getSessionsDashboardData();
 
     return NextResponse.json({ data });
   } catch (error) {

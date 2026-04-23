@@ -1,14 +1,16 @@
 "use client";
 
 import { RotateCcw, Pause, Play, Save } from "lucide-react";
-import { SUBJECT_SUGGESTIONS, SUB_SUBJECT_SUGGESTIONS } from "@/features/sessions/constants";
-import { useStopwatch } from "@/features/sessions/hooks/use-stopwatch";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
+import type { SessionSuggestions } from "@/features/sessions/types";
+import type { UseStopwatchReturn } from "@/features/sessions/hooks/use-stopwatch";
 import { formatDuration } from "@/lib/utils";
 
 type StopwatchPanelProps = {
+  stopwatch: UseStopwatchReturn;
+  suggestions: SessionSuggestions;
   onSave: (payload: {
     duration: number;
     subject: string;
@@ -18,7 +20,7 @@ type StopwatchPanelProps = {
   isSaving: boolean;
 };
 
-export function StopwatchPanel({ onSave, isSaving }: StopwatchPanelProps) {
+export function StopwatchPanel({ stopwatch, suggestions, onSave, isSaving }: StopwatchPanelProps) {
   const {
     elapsedSeconds,
     isRunning,
@@ -31,13 +33,13 @@ export function StopwatchPanel({ onSave, isSaving }: StopwatchPanelProps) {
     reset,
     clearAll,
     updateField,
-  } = useStopwatch();
+  } = stopwatch;
 
   const trimmedSubject = subject.trim();
   const trimmedSubSubject = subSubject.trim();
   const canSave = elapsedSeconds > 0 && trimmedSubject.length > 0 && trimmedSubSubject.length > 0;
 
-  const availableSubSubjects = SUB_SUBJECT_SUGGESTIONS[trimmedSubject] ?? [];
+  const availableSubSubjects = suggestions.subSubjectsBySubject[trimmedSubject] ?? [];
 
   async function handleSave() {
     if (!canSave || !startedAt) {
@@ -72,7 +74,9 @@ export function StopwatchPanel({ onSave, isSaving }: StopwatchPanelProps) {
             value={subject}
             onChange={(value) => updateField("subject", value)}
             placeholder="Choose or type a subject"
-            suggestions={SUBJECT_SUGGESTIONS}
+            suggestions={suggestions.subjects}
+            helperText="Type a new subject once and it will appear here as a reusable suggestion after you save a session."
+            onSuggestionSelect={(value) => updateField("subject", value)}
           />
           <Field
             id="subSubject"
@@ -81,6 +85,8 @@ export function StopwatchPanel({ onSave, isSaving }: StopwatchPanelProps) {
             onChange={(value) => updateField("subSubject", value)}
             placeholder="Choose or type a sub-subject"
             suggestions={availableSubSubjects}
+            helperText="Sub-subject suggestions adapt to the selected subject from your previous sessions."
+            onSuggestionSelect={(value) => updateField("subSubject", value)}
           />
         </div>
 
