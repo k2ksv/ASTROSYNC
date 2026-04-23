@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String         @id @default(cuid())
+  name      String?
+  email     String?        @unique
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  sessions  StudySession[]
+
+  @@map("users")
+}
+
+model StudySession {
+  id          String   @id @default(cuid())
+  duration    Int
+  subject     String
+  subSubject  String
+  startedAt   DateTime
+  completedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([subject])
+  @@map("study_sessions")
+}
