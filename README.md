@@ -82,6 +82,50 @@ prisma/
 
 7. Open [http://localhost:3000](http://localhost:3000).
 
+## Daily Local Use
+
+For regular personal use, run ASTRO SYNC in production mode instead of development mode.
+
+1. Build the app once after setup or after code changes:
+
+   ```bash
+   npm run build
+   ```
+
+2. Start the local production server:
+
+   ```bash
+   npm start
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000).
+
+Keep PostgreSQL running in the background. Saved study sessions are stored permanently in PostgreSQL, so data remains available after closing the browser, stopping the app, or restarting the PC.
+
+### Windows Startup Shortcut
+
+To launch ASTRO SYNC automatically when Windows starts, create a file named `start-astro-sync.bat`:
+
+```bat
+@echo off
+cd /d "C:\path\to\ASTROSYNC"
+call npm start
+```
+
+Replace `C:\path\to\ASTROSYNC` with the real project folder path. Build the app at least once before using the startup file:
+
+```powershell
+npm run build
+```
+
+Then place `start-astro-sync.bat` in the Windows Startup folder:
+
+```text
+shell:startup
+```
+
+The app will be available at [http://localhost:3000](http://localhost:3000) after signing in to Windows. If port `3000` is already in use, stop the existing ASTRO SYNC terminal before starting another one.
+
 ## API
 
 - `POST /api/sessions` creates a new study session
