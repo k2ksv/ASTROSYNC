@@ -46,6 +46,31 @@ export function formatDurationCompact(totalSeconds: number) {
   return `${seconds}s`;
 }
 
+export function formatDurationHero(totalSeconds: number) {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return {
+      value: `${hours}h ${String(minutes).padStart(2, "0")}m`,
+      detail: `${seconds}s tracked beyond the minute`,
+    };
+  }
+
+  if (minutes > 0) {
+    return {
+      value: `${minutes}m ${String(seconds).padStart(2, "0")}s`,
+      detail: "Building today's focus stack",
+    };
+  }
+
+  return {
+    value: `${seconds}s`,
+    detail: "Start a session to grow this live",
+  };
+}
+
 export function formatDateHeading(dateString: string) {
   const date = new Date(dateString);
 

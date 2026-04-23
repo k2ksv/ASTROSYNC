@@ -28,10 +28,14 @@ const config: Config = {
       },
       boxShadow: {
         soft: "0 24px 60px rgba(0, 0, 0, 0.28)",
+        glow: "0 0 45px rgba(110, 180, 139, 0.28)",
+        "glow-strong": "0 0 75px rgba(142, 200, 164, 0.32)",
       },
       backgroundImage: {
         "forest-glow":
           "radial-gradient(circle at top, rgba(110, 180, 139, 0.22), transparent 32%), radial-gradient(circle at bottom right, rgba(99, 150, 118, 0.12), transparent 28%)",
+        "card-glow":
+          "radial-gradient(circle at top left, rgba(142, 200, 164, 0.18), transparent 34%), linear-gradient(135deg, rgba(19, 32, 23, 0.96), rgba(7, 17, 10, 0.92))",
       },
     },
   },
